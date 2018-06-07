@@ -26,28 +26,39 @@ do
   esac
 done
 
-# 環境に `yum` を使って pcre-devel をインストールする
-if [[ ! $(sudo yum list installed | grep pcre-devel) ]]; then
-  [[ -n ${verbose} ]] && echo "install pcre-devel"
-  sudo yum -y install pcre-devel
-fi
+function install_for_version7() {
+  echo ${verbose}
+  # 環境に `yum` を使って pcre-devel をインストールする
+  if [[ ! $(sudo yum list installed | grep pcre-devel) ]]; then
+    [[ -n ${verbose} ]] && echo "install pcre-devel"
+    sudo yum -y install pcre-devel
+  fi
 
-# 環境に `yum` を使って xz-devel をインストールする
-if [[ ! $(sudo yum list installed | grep xz-devel) ]]; then
-  [[ -n ${verbose} ]] && echo "install xz-devel"
-  sudo yum -y install xz-devel
-fi
+  # 環境に `yum` を使って xz-devel をインストールする
+  if [[ ! $(sudo yum list installed | grep xz-devel) ]]; then
+    [[ -n ${verbose} ]] && echo "install xz-devel"
+    sudo yum -y install xz-devel
+  fi
 
-# 環境に `yum` を使って automake をインストールする
-if [[ ! $(sudo yum list installed | grep automake) ]]; then
-  [[ -n ${verbose} ]] && echo "install automake"
-  sudo yum -y install automake
-fi
+  # 環境に `yum` を使って automake をインストールする
+  if [[ ! $(sudo yum list installed | grep automake) ]]; then
+    [[ -n ${verbose} ]] && echo "install automake"
+    sudo yum -y install automake
+  fi
 
-# 環境に `yum` を使って the_silver_searcher をインストールする
-if [[ ! $(sudo yum list installed | grep the_silver_searcher) ]]; then
-  [[ -n ${verbose} ]] && echo "install the_silver_searcher"
-  sudo yum -y install the_silver_searcher
+  # 環境に `yum` を使って the_silver_searcher をインストールする
+  if [[ ! $(sudo yum list installed | grep the_silver_searcher) ]]; then
+    [[ -n ${verbose} ]] && echo "install the_silver_searcher"
+    sudo yum -y install the_silver_searcher
+  fi
+}
+
+major_version=$(
+  cd $(dirname $0)
+  sh ../../bin/get_centos_major_version.sh -M
+)
+if [[ "${major_version}" -eq 7 ]]; then
+  install_for_version7
 fi
 
 exit 0
